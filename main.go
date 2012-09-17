@@ -40,6 +40,8 @@ func init() {
 		fmt.Printf("**warning: could not read history file [%s]\n", fname)
 		return
 	}
+
+	term.SetCompleter(paw_completer)
 }
 
 func atexit() {
@@ -73,6 +75,16 @@ var env *gribble.Environment = gribble.New(
 		new_cmd_ntuple_create(),
 	},
 )
+
+var paw_completer liner.Completer = func(line string) []string {
+	completions := []string{}
+	for _,cmd := range env.CommandNames() {
+		if strings.HasPrefix(cmd, line) {
+			completions = append(completions, cmd)
+		}
+	}
+	return completions
+}
 
 func new_cmd_ntuple_create() *ntuple_create {
 	return &ntuple_create{

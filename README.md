@@ -15,6 +15,6 @@ Possible todos
 --------------
 
 - add colorization
-- add completion
 - add multiple backends: ``ROOT``, ``gnuplot``, ...
+- add concurrency features to the interpreter
 
