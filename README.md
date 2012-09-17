@@ -7,5 +7,14 @@ facilities.
 
 It is mostly for fun.
 
-Right now, only one command is implemented: "/ntuple/create" and it
+Right now, only one command is implemented: ``"/ntuple/create"`` and it
 only prints back its arguments.
+
+
+Possible todos
+--------------
+
+- add colorization
+- add completion
+- add multiple backends: ``ROOT``, ``gnuplot``, ...
+
