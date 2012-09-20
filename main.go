@@ -10,6 +10,7 @@ import (
 	"github.com/sbinet/liner"
 	_ "github.com/sbinet/go-croot/pkg/croot"
 	"github.com/sbinet/paw-go/pkg/gribble"
+	"github.com/sbinet/paw-go/pkg/pawmgr"
 )
 
 var term *liner.State = nil
@@ -97,7 +98,7 @@ type ntuple_create struct {
 	Title string `param:"2" types:"string"`
 	Vars  string `param:"3" types:"string"`
 
-	mgr *NtupleMgr
+	mgr *pawmgr.NtupleMgr
 }
 
 func (cmd *ntuple_create) Run() gribble.Value {
@@ -109,17 +110,24 @@ func (cmd *ntuple_create) Run() gribble.Value {
 	//nvars := cmd.Nvars.(int)
 	vars, err := strconv.Unquote(cmd.Vars)
 	ntvars := strings.Split(vars, ",")
-	return cmd.mgr.create(id, title, ntvars)
+	return cmd.mgr.Create(id, title, ntvars)
 }
 
-type NtupleMgr struct {
+func new_cmd_ntuple_plot() *ntuple_plot {
+	return &ntuple_plot{
+		//mgr: nil,
+	}
 }
 
-func (mgr *NtupleMgr) create(id int, title string, vars []string) error {
-	fmt.Printf("==> /ntuple/create id=%v title=%q vars=%v\n",
-		id, title, vars)
-	return nil
+type ntuple_plot struct {
+	name     string      `/ntuple/plot`
+	Id int `param:"1" types:"int"`
+	//Func string `param:"2" types:"string"`
+	//Vars  string `param:"3" types:"string"`
+
+	mgr *pawmgr.NtupleMgr
 }
+
 
 func main() {
 
