@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"path"
 	"strconv"
@@ -93,7 +92,7 @@ func new_cmd_ntuple_create() *ntuple_create {
 }
 
 type ntuple_create struct {
-	name     string      `ntcr`
+	name     string      `/ntuple/create`
 	Id int `param:"1" types:"int"`
 	Title string `param:"2" types:"string"`
 	Vars  string `param:"3" types:"string"`
@@ -126,58 +125,29 @@ func main() {
 
 	defer atexit()
 
-	var ierr error = nil // previous interpreter error
-	ps1 := "paw> "
-	ps2 := "...  "
-	prompt := &ps1
-	codelet := ""
+	prompt := "paw> "
+	cmd := ""
 
 	for {
-		line, err := term.Prompt(*prompt)
+		line, err := term.Prompt(prompt)
 		if err != nil {
-			if err != io.EOF {
-				ierr = err
-			} else {
-				ierr = nil
-			}
 			break //os.Exit(0)
 		}
-		if line == "" {
-			// no more input
-			prompt = &ps1
-		}
-
-		codelet += line
-		if codelet != "" {
-			for _, ll := range strings.Split(codelet, "\n") {
+		cmd = line
+		if cmd != "" {
+			for _, ll := range strings.Split(cmd, "\n") {
 				term.AppendHistory(ll)
 			}
 		} else {
 			continue
 		}
 
-		_, err = env.Run(codelet)
+		_, err = env.Run(cmd)
 		if err != nil {
-			if ierr != nil && prompt == &ps1 {
-				fmt.Println(err.Error())
-				fmt.Printf("(error %T)\n", err)
-				// reset state
-				codelet = ""
-				ierr = nil
-				prompt = &ps1
-				continue
-			}
-			// maybe multi-line command ?
-			prompt = &ps2
-			ierr = err
-			codelet += "\n"
+			fmt.Println(err.Error())
+			fmt.Printf("(error %T)\n", err)
 			continue
 		}
-
-		//	resetstate:
-		// reset state
-		codelet = ""
-		ierr = nil
 	}
 
 	fmt.Printf("\n:: bye.\n")
