@@ -9,7 +9,7 @@ import (
 
 	"github.com/sbinet/liner"
 	_ "github.com/sbinet/go-croot/pkg/croot"
-	"github.com/sbinet/gribble"
+	"github.com/sbinet/paw-go/gribble"
 )
 
 var term *liner.State = nil
