@@ -13,4 +13,9 @@ func (mgr *NtupleMgr) Create(id int, title string, vars []string) error {
 	return nil
 }
 
+func (mgr *NtupleMgr) Plot(id int) error {
+	fmt.Printf("==> /ntuple/plot id=%v\n", id)
+	return nil
+}
+
 // EOF
